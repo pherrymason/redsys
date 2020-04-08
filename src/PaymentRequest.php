@@ -22,14 +22,22 @@ final class PaymentRequest
     private $paymentMethod;
     /** @var TransactionType */
     private $transactionType;
+    private $terminal;
+    /** @var string */
+    private $urlOk;
+    /** @var string */
+    private $urlKo;
 
-    public function __construct(Money $amount, string $orderNumber, string $merchantCode, $paymentMethod, $transactionType)
+    public function __construct(Money $amount, string $orderNumber, string $merchantCode, $paymentMethod, $transactionType, $terminal, string $urlOk, string $urlKo)
     {
         $this->amount = $amount;
         $this->orderNumber = $orderNumber;
         $this->merchantCode = $merchantCode;
         $this->paymentMethod = $paymentMethod;
         $this->transactionType = $transactionType;
+        $this->terminal = $terminal;
+        $this->urlOk = $urlOk;
+        $this->urlKo = $urlKo;
     }
 
     public function buildPayloadParameters(): array
@@ -39,7 +47,11 @@ final class PaymentRequest
             Parameter::MERCHANT_CODE => $this->merchantCode,
             Parameter::AMOUNT => $this->formatAmount($this->amount),
             Parameter::CURRENCY => CurrencyCode::convertFromCurrency($this->amount->currency()),
-            Parameter::PAYMENT_METHOD => $this->paymentMethod
+            Parameter::PAYMENT_METHOD => $this->paymentMethod,
+            Parameter::TRANSACTION_TYPE => $this->transactionType,
+            Parameter::TERMINAL => $this->terminal,
+            Parameter::URL_OK => $this->urlOk,
+            Parameter::URL_KO => $this->urlKo
         ];
 
         return $parameters;
