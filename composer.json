@@ -9,6 +9,9 @@
             "email": "raulferras@gmail.com"
         }
     ],
+    "scripts": {
+        "test": "vendor/bin/phpunit"
+    },
     "autoload": {
         "psr-4": {
             "Sepia\\Redsys\\": "src/"
