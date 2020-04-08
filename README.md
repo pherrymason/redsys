@@ -1,3 +1,3 @@
 # Redsys
 
-![PHP Composer](https://github.com/raulferras/redsys/workflows/PHP%20Composer/badge.svg)
+![Tests](https://github.com/raulferras/redsys/workflows/Tests/badge.svg)
