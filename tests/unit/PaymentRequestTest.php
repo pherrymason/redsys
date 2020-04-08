@@ -35,5 +35,28 @@ class PaymentRequestTest extends TestCase
         $this->assertEquals($expected, $payloadParameters);
     }
 
+    /** @test */
+    public function properly_generated_payload_contains_optional_parameters()
+    {
+        $paymentRequest = new PaymentRequest(Money::EUR(124.12), '1234', 'merchantCode', PaymentMethod::CARD, TransactionType::AUTHORIZATION, 1, new SiteUrls('http://ecommerce.site/ok', 'http://ecommerce.site/ko', 'http://ecommerce.site/hook'));
+        $paymentRequest->setMerchantData('extra-data');
+
+        $payloadParameters = $paymentRequest->buildPayloadParameters();
+
+        $expected = [
+            Parameter::ORDER => '1234',
+            Parameter::AMOUNT => 12412,
+            Parameter::CURRENCY => CurrencyCode::EUR,
+            Parameter::PAYMENT_METHOD => PaymentMethod::CARD,
+            Parameter::TRANSACTION_TYPE => TransactionType::AUTHORIZATION,
+            Parameter::MERCHANT_CODE => 'merchantCode',
+            Parameter::TERMINAL => 1,
+            Parameter::URL_OK => 'http://ecommerce.site/ok',
+            Parameter::URL_KO => 'http://ecommerce.site/ko',
+            Parameter::NOTIFICATION_URL => 'http://ecommerce.site/hook',
+            Parameter::MERCHANT_DATA => 'extra-data'
+        ];
+
+        $this->assertEquals($expected, $payloadParameters);
     }
 }

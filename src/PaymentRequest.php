@@ -55,9 +55,16 @@ final class PaymentRequest
             Parameter::URL_KO => $this->flowUrl->koUrl()
         ];
 
+        if ($this->flowUrl->notificationUrl() !== null){
+            $parameters[Parameter::NOTIFICATION_URL] = $this->flowUrl->notificationUrl();
+        }
+
+        if ($this->merchantData !== null) {
+            $parameters[Parameter::MERCHANT_DATA] = $this->merchantData;
+        }
+
         return $parameters;
     }
-
 
     private function formatAmount(Money $amount): int
     {
@@ -65,5 +72,10 @@ final class PaymentRequest
         $plainAmount = number_format(str_replace(',', '.', $plainAmount), 2, '.', '');
 
         return (int)(string)($plainAmount * 100);
+    }
+
+    public function setMerchantData(string $merchantData): void
+    {
+        $this->merchantData = $merchantData;
     }
 }
