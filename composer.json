@@ -1,0 +1,23 @@
+{
+    "name": "sepia/redsys",
+    "description": "Agnostic payment gateway for Redsys/Sermepa",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Raúl Ferràs",
+            "email": "raulferras@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Sepia\\Redsys\\": "src/"
+        }
+    },
+    "require": {
+        "ulabox/money": "^2.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.0"
+    }
+}
