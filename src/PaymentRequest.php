@@ -4,6 +4,7 @@ namespace Sepia\Redsys;
 
 use Money\Money;
 use Sepia\Redsys\PaymentRequest\CurrencyCode;
+use Sepia\Redsys\PaymentRequest\SiteUrls;
 use Sepia\Redsys\PaymentRequest\Parameter;
 use Sepia\Redsys\PaymentRequest\PaymentMethod;
 use Sepia\Redsys\PaymentRequest\TransactionType;
@@ -22,13 +23,14 @@ final class PaymentRequest
     private $paymentMethod;
     /** @var TransactionType */
     private $transactionType;
+    /** @var int */
     private $terminal;
+    /** @var SiteUrls */
+    private $flowUrl;
     /** @var string */
-    private $urlOk;
-    /** @var string */
-    private $urlKo;
+    private $notificationUrl;
 
-    public function __construct(Money $amount, string $orderNumber, string $merchantCode, $paymentMethod, $transactionType, $terminal, string $urlOk, string $urlKo)
+    public function __construct(Money $amount, string $orderNumber, string $merchantCode, $paymentMethod, $transactionType, $terminal, SiteUrls $flowUrl)
     {
         $this->amount = $amount;
         $this->orderNumber = $orderNumber;
@@ -36,8 +38,7 @@ final class PaymentRequest
         $this->paymentMethod = $paymentMethod;
         $this->transactionType = $transactionType;
         $this->terminal = $terminal;
-        $this->urlOk = $urlOk;
-        $this->urlKo = $urlKo;
+        $this->flowUrl = $flowUrl;
     }
 
     public function buildPayloadParameters(): array
@@ -50,8 +51,8 @@ final class PaymentRequest
             Parameter::PAYMENT_METHOD => $this->paymentMethod,
             Parameter::TRANSACTION_TYPE => $this->transactionType,
             Parameter::TERMINAL => $this->terminal,
-            Parameter::URL_OK => $this->urlOk,
-            Parameter::URL_KO => $this->urlKo
+            Parameter::URL_OK => $this->flowUrl->okUrl(),
+            Parameter::URL_KO => $this->flowUrl->koUrl()
         ];
 
         return $parameters;
