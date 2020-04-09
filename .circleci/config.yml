@@ -7,7 +7,7 @@ jobs:
   build:
     docker:
       # Specify the version you desire here
-      - image: circleci/php:7.1
+      - image: circleci/php:7.2
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
@@ -41,4 +41,3 @@ jobs:
 
       # run tests with phpunit or codecept
       - run: ./vendor/bin/phpunit
-      
