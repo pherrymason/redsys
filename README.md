@@ -4,3 +4,7 @@
 
 [![CircleCI](https://circleci.com/gh/raulferras/redsys.svg?style=shield)](https://circleci.com/gh/raulferras/redsys)
 
+
+## Installation
+
+`composer require sepia/redsys`
