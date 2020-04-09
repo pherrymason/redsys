@@ -1,0 +1,8 @@
+version: '3.7'
+services:
+  lib:
+    build: ./
+    container_name: lib
+    volumes:
+      - "./:/usr/app"
+      - ./docker/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
