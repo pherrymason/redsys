@@ -64,8 +64,9 @@ class SecurityTest extends TestCase
         ];
     }
 
-    /** @var string  */
+    /** @var string */
     private $secretKey;
+
     protected function setUp(): void
     {
         parent::setUp();
