@@ -19,36 +19,33 @@ class SecurityTest extends TestCase
             'Ds_MerchantParameters' => 'eyJEc19EYXRlIjoiMDlcLzA0XC8yMDIwIiwiRHNfSG91ciI6IjA4OjEyIiwiRHNfU2VjdXJlUGF5bWVudCI6IjEiLCJEc19DYXJkX0NvdW50cnkiOiI3MjQiLCJEc19BbW91bnQiOiIxMzk5MDAiLCJEc19DdXJyZW5jeSI6Ijk3OCIsIkRzX09yZGVyIjoiNDk2MTJlaWZnYW96IiwiRHNfTWVyY2hhbnRDb2RlIjoiMzM0NTEwOTU1IiwiRHNfVGVybWluYWwiOiIwMDEiLCJEc19SZXNwb25zZSI6IjAwMDAiLCJEc19NZXJjaGFudERhdGEiOiJiYmY3MDE0Zi00ZDJiLTQyZDItOWIzZS01OTkwNjQwZGQ5NWEiLCJEc19UcmFuc2FjdGlvblR5cGUiOiIwIiwiRHNfQ29uc3VtZXJMYW5ndWFnZSI6IjEiLCJEc19BdXRob3Jpc2F0aW9uQ29kZSI6IjEyOTA5NSIsIkRzX0NhcmRfQnJhbmQiOiIxIn0=',
             'Ds_Signature' => '3ipAi4RttNRtbSxcIj8FdNguzSFsiWmeFB0WHZK4ds8='
         ];
-
         $this->assertEquals($expected, $signedPayload);
     }
-    
-    
-    /**
-     * @test
-     */
+
+    /** @test */
     public function merchant_parameters_are_decoded_and_validated()
     {
-        $security = new Security($this->secretKey);
-
         $payload = [
             'Ds_SignatureVersion' => 'HMAC_SHA256_V1',
             'Ds_MerchantParameters' => 'eyJEc19EYXRlIjoiMDlcLzA0XC8yMDIwIiwiRHNfSG91ciI6IjA4OjEyIiwiRHNfU2VjdXJlUGF5bWVudCI6IjEiLCJEc19DYXJkX0NvdW50cnkiOiI3MjQiLCJEc19BbW91bnQiOiIxMzk5MDAiLCJEc19DdXJyZW5jeSI6Ijk3OCIsIkRzX09yZGVyIjoiNDk2MTJlaWZnYW96IiwiRHNfTWVyY2hhbnRDb2RlIjoiMzM0NTEwOTU1IiwiRHNfVGVybWluYWwiOiIwMDEiLCJEc19SZXNwb25zZSI6IjAwMDAiLCJEc19NZXJjaGFudERhdGEiOiJiYmY3MDE0Zi00ZDJiLTQyZDItOWIzZS01OTkwNjQwZGQ5NWEiLCJEc19UcmFuc2FjdGlvblR5cGUiOiIwIiwiRHNfQ29uc3VtZXJMYW5ndWFnZSI6IjEiLCJEc19BdXRob3Jpc2F0aW9uQ29kZSI6IjEyOTA5NSIsIkRzX0NhcmRfQnJhbmQiOiIxIn0=',
             'Ds_Signature' => '3ipAi4RttNRtbSxcIj8FdNguzSFsiWmeFB0WHZK4ds8='
         ];
+
+        $security = new Security($this->secretKey);
         $decoded = $security->validateRedsysRequest($payload);
 
+        $expected = [
+            'Ds_SignatureVersion' => 'HMAC_SHA256_V1',
+            'Ds_MerchantParameters' => $this->merchantData(),
+            'Ds_Signature' => '3ipAi4RttNRtbSxcIj8FdNguzSFsiWmeFB0WHZK4ds8='
+        ];
         $this->assertEquals(
-            [
-                'Ds_SignatureVersion' => 'HMAC_SHA256_V1',
-                'Ds_MerchantParameters' => $this->merchantData(),
-                'Ds_Signature' => '3ipAi4RttNRtbSxcIj8FdNguzSFsiWmeFB0WHZK4ds8='
-            ], $decoded);
+            $expected, $decoded);
     }
 
-    private function merchantData()
+    private function merchantData(): array
     {
-        $parameters = [
+        return [
             'Ds_Date' => '09/04/2020',
             'Ds_Hour' => '08:12',
             'Ds_SecurePayment' => '1',
@@ -65,8 +62,6 @@ class SecurityTest extends TestCase
             'Ds_AuthorisationCode' => '129095',
             'Ds_Card_Brand' => '1'
         ];
-
-        return $parameters;
     }
 
     /** @var string  */
